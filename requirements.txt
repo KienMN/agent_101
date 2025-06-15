@@ -1,0 +1,10 @@
+agno==1.6.2
+groq==0.28.0
+duckduckgo-search==8.0.4
+yfinance==0.2.63
+fastapi==0.115.12
+sqlalchemy==2.0.41
+uvicorn==0.34.3
+langchain-community==0.3.25
+langgraph==0.4.8
+langchain-groq==0.3.2
