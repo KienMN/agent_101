@@ -1,7 +1,6 @@
 import dotenv
-from langchain_community.tools import DuckDuckGoSearchResults, DuckDuckGoSearchRun
+from langchain_community.tools import DuckDuckGoSearchResults
 from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
-from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 from langgraph.graph import START, StateGraph
@@ -70,10 +69,11 @@ def retrieve(
         api_wrapper=DuckDuckGoSearchAPIWrapper(max_results=3),
         output_format="list",
     )
-    search_run = DuckDuckGoSearchRun(tool=search_tool)
-    results = search_tool.invoke(state.question)
-    # print(results)
-    state.context = results
+    model_with_tool = model.bind_tools([search_tool])
+    tool_call = model_with_tool.invoke(state.question).tool_calls[0]
+    results = search_tool.invoke(tool_call)
+    print(type(results.content))
+    state.context = results.artifact
     return state
 
 
